@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>latest-driver</title>
+</head>
+
+<body>
+    <h1></h1>
+    <form action="/admin" method="post" enctype="multipart/form-data">
+
+        <label for="driverName">driverName</label>
+        <input type="driverName" id="driverName" name="driverName" required><br>
+        <label for="downLoadlink">downLoadlink:</label>
+        <input type="text" id="downLoadlink" name="downLoadlink" required><br>
+        <label for="Version">Version:</label>
+        <input type="date" id="Version" name="Version" required><br>
+        <label for="billPdf">releaseDate:</label>
+        <input type="file" id="driver" name="releaseDate" accept="application/pdf" required><br>
+        <button type="submit">Register</button>
+    </form>
+    <% if (typeof message !=='undefined' ) { %>
+        <script>
+            alert("<%= message %>");
+            window.location.href = "/";
+        </script>
+        <% } %>
+            <a href="/">Back to Home</a>
+
+</body>
+
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register Warranty</title>
+</head>
+<body>
+    <h1>Register Your Warranty</h1>
+    <form action="/register-warranty" method="post" enctype="multipart/form-data">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br>
+        <label for="serialNumber">Device Serial Number:</label>
+        <input type="text" id="serialNumber" name="serialNumber" required><br>
+        <label for="purchaseDate">Purchase Date:</label>
+        <input type="date" id="purchaseDate" name="purchaseDate" required><br>
+        <label for="billPdf">Upload Bill PDF:</label>
+        <input type="file" id="billPdf" name="billPdf" accept="application/pdf" required><br>
+        <button type="submit">Register</button>
+    </form>
+    <% if (typeof message !== 'undefined') { %>
+        <script>
+            alert("<%= message %>");
+            window.location.href = "/";
+        </script>
+    <% } %>
+    <a href="/">Back to Home</a>
+</body>
+</html>

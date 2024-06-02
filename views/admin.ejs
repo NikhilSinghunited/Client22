@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Manage Drivers</title>
+</head>
+
+<body>
+    <h1>Admin Panel - Manage Drivers</h1>
+
+    <h2>Driver List</h2>
+    <ul>
+        <% drivers.forEach(driver=> { %>
+            <li>
+                <%= driver.model %> (Version: <%= driver.version %>)
+                        <form action="/admin/drivers/<%= driver._id %>?_method=DELETE" method="post">
+                            <button type="submit">Delete</button>
+                        </form>
+            </li>
+            <% }); %>
+    </ul>
+
+    <h2>Upload New Driver</h2>
+    <form action="/admin/drivers" method="post" enctype="multipart/form-data">
+        <label for="model">Model:</label>
+        <input type="text" id="model" name="model" required><br>
+        <label for="version">Version:</label>
+        <input type="text" id="version" name="version" required><br>
+        <label for="releaseDate">Release Date:</label>
+        <input type="date" id="releaseDate" name="releaseDate" required><br>
+        <label for="driverFile">Upload Driver File:</label>
+        <input type="file" id="driverFile" name="driverFile" accept=".exe, .msi" required><br>
+        <button type="submit">Upload Driver</button>
+    </form>
+
+    <a href="/">Back to Home</a>
+</body>
+
+</html>

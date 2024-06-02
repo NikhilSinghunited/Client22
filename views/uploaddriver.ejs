@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Driver Data</title>
+</head>
+
+<body>
+    <h1>Submit Driver Data</h1>
+    <form action="/driver/new" method="POST">
+        <label for="model">Model:</label>
+        <input type="text" id="model" name="model" required>
+        <br>
+        <label for="driverName">Driver Name:</label>
+        <input type="text" id="driverName" name="driverName" required>
+        <br>
+        <label for="downloadLink">Download Link:</label>
+        <input type="url" id="downloadLink" name="downloadLink" required>
+        <br>
+        <label for="version">Version:</label>
+        <input type="text" id="version" name="version" required>
+        <br>
+        <label for="releaseDate">Release Date:</label>
+        <input type="date" id="releaseDate" name="releaseDate" required>
+        <br>
+        <label for="driverpath">Driver Path:</label>
+        <input type="text" id="driverpath" name="driverpath" required>
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+
+</html>
+
+<!-- yha se model ko kaise fetch kr rhe ho?
+<% ye wale tag se mapping krte hai na ?%> -->

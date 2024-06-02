@@ -1,0 +1,30 @@
+<!-- check-device.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Your Device</title>
+</head>
+<body>
+    <h1>Check Your Device</h1>
+    <button id="checkDeviceInfoBtn">Check Device Info</button>
+    <div id="deviceInfo"></div>
+
+    <script>
+        document.getElementById('checkDeviceInfoBtn').addEventListener('click', async () => {
+            try {
+                const response = await fetch('/get-bios-info');
+                const data = await response.json();
+                document.getElementById('deviceInfo').innerHTML = `
+                    <p>Model Number: ${data.model}</p>
+                    <p>Serial Number: ${data.serial}</p>
+                `;
+            } catch (error) {
+                console.error('Error fetching BIOS information:', error);
+                document.getElementById('deviceInfo').innerHTML = '<p>Error fetching BIOS information</p>';
+            }
+        });
+    </script>
+</body>
+</html>
