@@ -2,16 +2,23 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const admin = require('./route/admin');
 const driver = require('./route/driver');
+const login = require('./route/login');
+const dotenv = require('dotenv');
+
+const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const mongoose = require('mongoose');
 const multer = require('multer');
 const path = require('path');
 const systeminformation = require('systeminformation'); // Ensure you have systeminformation module installed
-const Driver = require('./models/Driver');
 const Warranty = require('./models/Warranty');
 const app = express();
 const port = 3001;
+dotenv.config();
+const JWT_SECRET = process.env.JWT_SECRET;
+app.use(express.json());
 
+const PORT = process.env.PORT || 3001;
 // Connect to MongoDB
 mongoose
   .connect('mongodb://localhost/device-check', {
@@ -29,6 +36,21 @@ app.use(express.static('public'));
 app.use('/uploads', express.static('uploads'));
 app.use('/admin', admin);
 app.use('/driver', driver);
+app.use('/login', login);
+const users = [
+  {
+    id: 1,
+    username: 'admin',
+    password: 'adminpassword',
+    role: 'admin',
+  },
+  {
+    id: 2,
+    username: 'user',
+    password: 'password',
+    role: 'user',
+  },
+];
 // Configure Multer
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -170,30 +192,6 @@ app.post('/register-warranty', upload.single('billPdf'), (req, res) => {
       });
     });
 });
-// app.post('/driver/new', async (req, res) => {
-//   try {
-//     const {
-//       model,
-//       driverName,
-//       downloadLink,
-//       version,
-//       releaseDate,
-//       driverpath,
-//     } = req.body;
-//     const newDriver = new Driver({
-//       model,
-//       driverName,
-//       downloadLink,
-//       version,
-//       releaseDate,
-//       driverpath,
-//     });
-//     await newDriver.save();
-//     res.redirect('/driver/new'); // Redirect or show a success message
-//   } catch (error) {
-//     res.status(500).send('Error saving driver data.');
-//   }
-// });
 
 // Route to list all drivers
 app.get('/admin/drivers', async (req, res) => {
@@ -231,7 +229,7 @@ app.post('/admin/drivers', upload.single('driverFile'), async (req, res) => {
 
   try {
     // Create a new driver document
-    const newDriver = new Driver({
+    const Driver = new Driver({
       model: model,
       version: version,
       releaseDate: releaseDate,
@@ -250,9 +248,10 @@ app.post('/admin/drivers', upload.single('driverFile'), async (req, res) => {
 
 app.get('/admin/nikhil', async (req, res) => {
   try {
+    console.log('hi');
     // Fetch all drivers from the database
     const drivers = await Driver.find();
-
+    console.log('drivers');
     // Render a view to display the list of drivers
     res.render('admindashboard', { drivers });
   } catch (error) {
@@ -260,7 +259,21 @@ app.get('/admin/nikhil', async (req, res) => {
     res.status(500).send('Error fetching drivers. Please try again.');
   }
 });
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
+  const user = users.find(
+    (u) => u.username === username && u.password === password
+  );
+  if (!user)
+    return res.status(400).json({ message: 'Invalid username or password.' });
 
+  const token = jwt.sign(
+    { id: user.id, username: user.username, role: user.role },
+    JWT_SECRET,
+    { expiresIn: '1h' }
+  );
+  res.json({ token });
+});
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
